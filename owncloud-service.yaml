@@ -1,14 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: owncloud-frontend
+  name: owncloud-service
   labels:
-    name: owncloud-frontend
+    name: owncloud-service
 spec:
-  type: LoadBalancer
   ports: 
     - port: 80
-      targetPort: 80
-      protocol: TCP
   selector:
     name: owncloud

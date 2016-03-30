@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: owncloud-rc
+  labels:
+    name: owncloud
+spec:
+  replicas: 1
+  selector:
+    name: owncloud
+  template:
+    metadata:
+      name: owncloud-rc
+      labels:
+        name: owncloud
+    spec:
+      containers:
+      - name: owncloud
+        image: gcr.io/aerobic-furnace-111811/owncloud-personal-server:v0.11
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+        volumeMounts:
+            # This name must match the volumes.name below.
+          - name: owncloud-persistent-storage
+            # Mount path within the container.
+            mountPath: /var/www/html
+      volumes:
+        - name: owncloud-persistent-storage
+          gcePersistentDisk:
+            # This disk must already exist.
+            pdName: owncloud-disk
+            fsType: ext4
