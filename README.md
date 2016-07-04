@@ -14,15 +14,15 @@ Below is copypasta of the refresh-certs.sh script, which is not complete.
 These can be executed sequentially, but with waits in between
 
 ```
-kubectl delete pod nginx
+kubectl delete rc nginx-rc
 kubectl create -f nginx-letsencrypt-rc.yaml
 NAME=$(kubectl get pods | grep nginx-rc | awk '{ print $1 }')
 kubectl exec -it $NAME /bin/bash -- -c 'EMAIL=ellis.rahhal@gmail.com DOMAINS=onru.sh ./fetch_certs.sh'
-kubectl exec -it $NAME /bin/bash -- -c 'DOMAINS=onru.sh ./save_certs.sh'
+kubectl exec -it $NAME /bin/bash -- -c 'SECRET_NAME=onru.sh DOMAINS=onru.sh ./save_certs.sh'
 kubectl exec -it $NAME /bin/bash -- -c 'EMAIL=ellis.rahhal@gmail.com DOMAINS=rahh.al ./fetch_certs.sh'
-kubectl exec -it $NAME /bin/bash -- -c 'DOMAINS=rahh.al ./save_certs.sh'
+kubectl exec -it $NAME /bin/bash -- -c 'SECRET_NAME=onru.sh DOMAINS=rahh.al ./save_certs.sh'
 kubectl delete rc nginx-rc
-kubectl create -f nginx.yaml
+kubectl create -f nginx-rc.yaml
 ```
 
 ### References
@@ -44,4 +44,5 @@ kubectl create -f nginx.yaml
     * backup secrets
     * bring up ephemeral bits
     * take down ephemeral bits
+* Add tagspaces
 * Add a blog
