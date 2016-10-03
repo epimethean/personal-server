@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: syncthing-rc
+  labels:
+    name: syncthing
+spec:
+  replicas: 1
+  selector:
+    name: syncthing
+  template:
+    metadata:
+      name: syncthing-rc
+      labels:
+        name: syncthing
+    spec:
+      containers:
+      - name: syncthing
+        image: joeybaker/syncthing
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - "mkdir -p /var/www/html/syncthing/data;"
+                - "mkdir -p /var/www/html/syncthing/config;"
+                - "ln -s /var/www/html/syncthing/data /src/data;"
+                - "ln -s /var/www/html/syncthing/config /src/config;"
+        ports:
+          - containerPort: 8080
+          - containerPort: 22000
+          - containerPort: 21025
+            protocol: UDP
+        volumeMounts:
+          - name: owncloud-persistent-storage
+            mountPath: /var/www/html
+      volumes:
+        - name: owncloud-persistent-storage
+          gcePersistentDisk:
+            # This disk must already exist.
+            pdName: owncloud-disk
+            fsType: ext4

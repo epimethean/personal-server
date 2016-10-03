@@ -16,10 +16,11 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: gcr.io/aerobic-furnace-111811/nginx-personal-server:v0.17
+        image: gcr.io/aerobic-furnace-111811/nginx-personal-server:v0.21
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 80
+          - containerPort: 8080
           - containerPort: 443
         volumeMounts: 
           - name: "rahhal"

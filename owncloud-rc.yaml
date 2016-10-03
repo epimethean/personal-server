@@ -22,11 +22,22 @@ spec:
           - containerPort: 80
         volumeMounts:
             # This name must match the volumes.name below.
-          - name: owncloud-persistent-storage
+          - name: persistent-storage
             # Mount path within the container.
             mountPath: /var/www/html
+      - name: syncthing
+        image: gcr.io/aerobic-furnace-111811/syncthing-personal-server:v0.5
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8080
+          - containerPort: 22000
+          - containerPort: 21025
+            protocol: UDP
+        volumeMounts:
+          - name: persistent-storage
+            mountPath: /var/www/html
       volumes:
-        - name: owncloud-persistent-storage
+        - name: persistent-storage
           gcePersistentDisk:
             # This disk must already exist.
             pdName: owncloud-disk
