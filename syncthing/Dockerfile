@@ -1,6 +1,6 @@
 FROM ubuntu:15.10
 
-ENV SYNCTHING_VERSION 0.14.7
+ENV SYNCTHING_VERSION 0.14.27
 
 RUN apt-get update \
   && apt-get upgrade -y --no-install-recommends \
@@ -34,4 +34,4 @@ RUN chmod 770 /srv/start.sh
 ENV UID=1027
 
 ENTRYPOINT ["/srv/start.sh"]
-FROM joeybaker/syncthing
+# FROM joeybaker/syncthing
